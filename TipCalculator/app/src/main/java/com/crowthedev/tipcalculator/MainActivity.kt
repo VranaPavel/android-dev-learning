@@ -21,6 +21,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -68,7 +69,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    TipTimeLayout()
+                    TipCalculatorLayout()
                 }
             }
         }
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TipTimeLayout() {
+fun TipCalculatorLayout() {
     var amountInput by remember { mutableStateOf("") }
     var tipInput by remember { mutableStateOf("") }
     var roundUp by remember { mutableStateOf(false) }
@@ -192,7 +193,8 @@ fun RoundTheTipRow(
  * according to the local currency.
  * Example would be "$10.00".
  */
-private fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): String {
+@VisibleForTesting
+internal fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): String {
     val tip: Double = tipPercent / 100 * amount
     return if (roundUp) {
         NumberFormat.getCurrencyInstance().format(ceil(tip))
@@ -205,6 +207,6 @@ private fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): 
 @Composable
 fun TipCalculatorLayoutPreview() {
     TipCalculatorTheme {
-        TipTimeLayout()
+        TipCalculatorLayout()
     }
 }
